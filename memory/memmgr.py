@@ -1,10 +1,5 @@
 import numpy as np
 import threading
-
-import sys
-sys.path.append('/Users/quentincurteman/Google Drive File Stream/My Drive/William Jessup/Fall 2018/Operating Systems/CS355')
-
-
 from memory.memerror import MemoryError
 from memory.memmgmt import MemoryManagementA
 
