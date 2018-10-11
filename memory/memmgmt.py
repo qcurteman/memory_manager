@@ -2,10 +2,6 @@ import numpy as np
 import time
 from random import *
 
-import sys
-sys.path.append('/Users/quentincurteman/Google Drive File Stream/My Drive/William Jessup/Fall 2018/Operating Systems/CS355')
-
-
 class MemoryManagementA:
     # constants
     row_size = 7
