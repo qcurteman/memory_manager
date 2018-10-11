@@ -39,6 +39,7 @@ Thumbs.db
 # General ignore #
 ##################
 *.pyc
+__pycache__
 
 # Specific file paths #
 #######################
