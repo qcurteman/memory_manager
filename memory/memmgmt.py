@@ -19,10 +19,7 @@ class MemoryManagementA:
         num_frames_needed = nbrPages - len(alist)
         if num_frames_needed > 0:
             #blist = MemoryManagementA.first_in_first_out(pid, num_frames_needed)
-            
             blist = MemoryManagementA.least_commonly_used(pid, num_frames_needed)
-            
-
             alist += blist
         return alist
 
@@ -45,7 +42,6 @@ class MemoryManagementA:
     def least_commonly_used(cls, pid, num_frames_needed):
         index_list = MemoryManagementA.get_low_val_list(pid, num_frames_needed, 2)
         MemoryManagementA.sweep()
-
         return index_list
 
     @classmethod
@@ -57,7 +53,6 @@ class MemoryManagementA:
     @classmethod
     def first_in_first_out(cls, pid, num_frames_needed):
         index_list = MemoryManagementA.get_low_val_list(pid, num_frames_needed, 1)
-        
         return index_list
 
     @classmethod

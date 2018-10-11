@@ -1,4 +1,5 @@
 import numpy as np
+import threading
 
 import sys
 sys.path.append('/Users/quentincurteman/Google Drive File Stream/My Drive/William Jessup/Fall 2018/Operating Systems/CS355')
@@ -16,6 +17,8 @@ class MemoryA:
     memory = np.zeros(shape=(row_size, column_size), dtype='int8')
     process_list = []
 
+    lock = threading.RLock()
+
     @classmethod
     def get_mem(cls, pid, nbrPages):
         mem_list = []
@@ -27,7 +30,9 @@ class MemoryA:
                 vectora = MemoryA.memory[pageFrameIndex, :]
                 tuplea = (pageFrameIndex, vectora) # vectora is a POINTER to memory
                 mem_list.append(tuplea)
-                MemoryA.update_processes(pageFrameIndex)
+                with MemoryA.lock:
+                    MemoryA.update_processes(pageFrameIndex)
+                    MemoryManagementA.set_management(pageFrameIndex, pid)
         return mem_list
     
     @classmethod
@@ -35,7 +40,7 @@ class MemoryA:
         for process in MemoryA.process_list:
             for index in range(len(process.page_table)):
                 if page_frame_index == process.page_table[index]:
-                    process.unsetx(page_frame_index) #TODO: fix
+                    process.unsetx(page_frame_index)
 
     @classmethod
     def modify_memory(cls, px):

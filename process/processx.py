@@ -31,7 +31,6 @@ class Process:
                 self.page_frame_vectors[index] = -1
 
     def setx(self, page, pageFrameIndex, vectora): #change name later pls
-        MemoryManagementA.set_management(pageFrameIndex, self.mypid)
         for i in range(self.page_table.shape[0]):
             if self.page_table[i][0] == -1:
                 self.page_table[i][0] = pageFrameIndex
