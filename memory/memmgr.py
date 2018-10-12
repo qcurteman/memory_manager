@@ -1,9 +1,9 @@
 import numpy as np
 import threading
 from memory.memerror import MemoryError
-from memory.memmgmt import MemoryManagementA
+from memory.memmgmt import MemoryManagement
 
-class MemoryA:
+class Memory:
 
     # constants
     row_size = 7
@@ -17,22 +17,23 @@ class MemoryA:
     @classmethod
     def get_mem(cls, pid, nbrPages):
         mem_list = []
-        page_frame_indexes = MemoryManagementA.find_free_space(pid, nbrPages)
+        with Memory.lock:
+            page_frame_indexes = MemoryManagement.find_free_space(pid, nbrPages)
             # returns a list of pageFrames
             # if none, returns an empty list
         if len(page_frame_indexes) > 0:
             for pageFrameIndex in page_frame_indexes:
-                vectora = MemoryA.memory[pageFrameIndex, :]
+                vectora = Memory.memory[pageFrameIndex, :]
                 tuplea = (pageFrameIndex, vectora) # vectora is a POINTER to memory
                 mem_list.append(tuplea)
-                with MemoryA.lock:
-                    MemoryA.update_processes(pageFrameIndex)
-                    MemoryManagementA.set_management(pageFrameIndex, pid)
+                with Memory.lock:
+                    Memory.update_processes(pageFrameIndex)
+                    MemoryManagement.set_management(pageFrameIndex, pid)
         return mem_list
     
     @classmethod
     def update_processes(cls, page_frame_index):
-        for process in MemoryA.process_list:
+        for process in Memory.process_list:
             for index in range(len(process.page_table)):
                 if page_frame_index == process.page_table[index]:
                     process.unsetx(page_frame_index)
@@ -44,17 +45,17 @@ class MemoryA:
         for v in vectorlist:
             for r in range(len(v)):
                 v[r] = nbr
-        indexes_to_remove = MemoryA.check_process_list()
-        MemoryA.remove_process(indexes_to_remove)
+        indexes_to_remove = Memory.check_process_list()
+        Memory.remove_process(indexes_to_remove)
 
 
     @classmethod
     def check_process_list(cls):
         indexes_to_remove = []
-        for index in range(len(MemoryA.process_list)):
+        for index in range(len(Memory.process_list)):
             in_mem = False
-            for row in range(len(MemoryA.memory)):
-                if MemoryA.process_list[index].mypid == MemoryA.memory[row][0]:
+            for row in range(len(Memory.memory)):
+                if Memory.process_list[index].mypid == Memory.memory[row][0]:
                     in_mem = True
                     break
             if in_mem == False:
@@ -65,22 +66,22 @@ class MemoryA:
 
     @classmethod
     def register_process(cls, process):
-        MemoryA.process_list.append(process)
+        Memory.process_list.append(process)
 
     @classmethod
     def remove_process(cls, indexes_to_remove):
         for index in range(len(indexes_to_remove)):
-            MemoryA.process_list.pop(indexes_to_remove[index])
+            Memory.process_list.pop(indexes_to_remove[index])
         
 
     @classmethod
     def print_mem(cls, ):
         print('--------------- memory array ---------------')
-        for r in range(0, MemoryA.row_size):
-            print(r, ' : ', MemoryA.memory[r])
+        for r in range(0, Memory.row_size):
+            print(r, ' : ', Memory.memory[r])
         print('--------------------------------------------')
 
         print('--------------- process list ---------------')
-        for i in range(len(MemoryA.process_list)):
-            print(i, ' : ', MemoryA.process_list[i].mypid)
+        for i in range(len(Memory.process_list)):
+            print(i, ' : ', Memory.process_list[i].mypid)
         print('--------------------------------------------')

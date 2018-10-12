@@ -1,6 +1,6 @@
 import numpy as np
-from memory.memmgmt import MemoryManagementA
-from memory.memmgr import MemoryA
+from memory.memmgmt import MemoryManagement
+from memory.memmgr import Memory
 
 class Process:
     pid_counter = 12
@@ -12,10 +12,10 @@ class Process:
             self.page_table[i] = -1
         self.available_space = initialNbrOfPages
         self.mypid = Process.get_pid()
-        MemoryA.register_process(self)
+        Memory.register_process(self)
 
     def load_pages(self, listOfPages, nbrPages):
-        listPageFrameVector = MemoryA.get_mem(self.mypid, nbrPages)
+        listPageFrameVector = Memory.get_mem(self.mypid, nbrPages)
         for i in range(0, len(listOfPages)):
             pageFrameIndex, vectora = listPageFrameVector[i] # vectora is a pointer to memory
             self.setx(listOfPages[i], pageFrameIndex, vectora)
@@ -33,7 +33,7 @@ class Process:
                 self.page_frame_vectors[i] = vectora
                 self.available_space += 1
                 break
-        MemoryA.modify_memory(self)
+        Memory.modify_memory(self)
 
     def unsetx(self, pageFrameIndex):
         for index in range(len(self.page_table)):

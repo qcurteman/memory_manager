@@ -1,8 +1,8 @@
 import sys
 sys.path.append('/Users/quentincurteman/Google Drive File Stream/My Drive/William Jessup/Fall 2018/Operating Systems/CS355')
 
-from memory.memmgmt import MemoryManagementA
-from memory.memmgr import MemoryA
+from memory.memmgmt import MemoryManagement
+from memory.memmgr import Memory
 from process.processx import Process
 import threading
 import time
@@ -11,8 +11,8 @@ import time
 def printAll(astring, process):
     print(" ********* start: ", astring, '*********')
     process.print_mgmt()
-    MemoryA.print_mem()
-    MemoryManagementA.print_management()
+    Memory.print_mem()
+    MemoryManagement.print_management()
     print(" *********** end: ", astring, '***********')
 
 # first process

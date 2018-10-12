@@ -3,8 +3,8 @@ sys.path.append('/Users/quentincurteman/Google Drive File Stream/My Drive/Willia
 
 from random import *
 
-from memory.memmgmt import MemoryManagementA
-from memory.memmgr import MemoryA
+from memory.memmgmt import MemoryManagement
+from memory.memmgr import Memory
 from process.processx import Process
 
 def modify(px):
@@ -18,14 +18,14 @@ def modify(px):
 def printAll(astring, process):
     print(" ********* start: ", astring, '*********')
     process.print_mgmt()
-    MemoryA.print_mem()
-    MemoryManagementA.print_management()
+    Memory.print_mem()
+    MemoryManagement.print_management()
     print(" *********** end: ", astring, '***********')
 
 def add_random_marks():
     for loop in range(25):
         index = randint(0, 6)
-        MemoryManagementA.mark(index)
+        MemoryManagement.mark(index)
 
 # first process
 p1 = Process(4)
